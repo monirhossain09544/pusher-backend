@@ -1,4 +1,3 @@
-
 # Real-time Notifications Backend with Pusher
 
 ## Overview
@@ -73,17 +72,10 @@ In your Flutter application, set up subscription to the Pusher channel to listen
 Refer to the **pusher_websocket_flutter package documentation** for detailed integration steps.
 
 ## Security
-When preparing for production, make sure to:
+**When preparing for production, make sure to:**
 
-Use environment variables to store your sensitive keys and secrets.
-Implement authentication and authorization mechanisms to protect your endpoints.
-
-Use SSL/TLS encryption for securing data in transit.
-Support
-
-For further assistance, refer to the Pusher Channels documentation or contact Pusher support.
-
-
-
-
-
+ - Use environment variables to store your sensitive keys and secrets.
+   Implement authentication and authorization mechanisms to protect your
+ - endpoints. Use SSL/TLS encryption for securing data in transit.
+ - Support For further assistance, refer to the Pusher Channels   
+   documentation or contact Pusher support.
