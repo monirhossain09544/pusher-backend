@@ -7,7 +7,7 @@ This repository contains the code for a Pusher backend server built with Node.js
 1. **Clone the Repository**: Clone this repository to your local machine using the following command:
 
     ```bash
-    git clone <repository_url>
+    git clone https://github.com/monirhossain09544/pusher-backend.git
     ```
 
 2. **Install Dependencies**: Navigate to the cloned repository directory and install the required dependencies by running:
