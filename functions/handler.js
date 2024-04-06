@@ -34,9 +34,6 @@ exports.handler = async (event) => {
       
       return {
         statusCode: 200,
-        headers: {
-          "Content-Type": "application/json"
-        },
         body: JSON.stringify({ message: 'Message sent and stored' })
       };
 
@@ -46,18 +43,12 @@ exports.handler = async (event) => {
       await deleteMessage(id);
       return {
         statusCode: 200,
-        headers: {
-          "Content-Type": "application/json"
-        },
         body: JSON.stringify({ message: 'Message deleted' })
       };
 
     default:
       return {
         statusCode: 400,
-        headers: {
-          "Content-Type": "application/json"
-        },
         body: JSON.stringify({ error: 'Unsupported HTTP method' })
       };
   }
