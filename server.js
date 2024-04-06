@@ -1,3 +1,4 @@
+// functions/handler.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const Pusher = require('pusher');
@@ -14,14 +15,13 @@ const pusher = new Pusher({
   useTLS: true
 });
 
-// Endpoint to trigger notifications
-app.post('/notify', (req, res) => {
-  const { message } = req.body;
-  pusher.trigger('notification-channel', 'new-notification', {
-    message
-  });
-  res.json({ message: 'Notification sent' });
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Route handler for notification endpoint
+exports.handler = async (event) => {
+  const { message } = JSON.parse(event.body);
+  pusher.trigger('notification-channel', 'new-notification', { message });
+  
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: 'Notification sent' })
+  };
+};
