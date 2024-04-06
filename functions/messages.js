@@ -1,7 +1,6 @@
-// functions/messages.js
 const faunadb = require('faunadb');
 const q = faunadb.query;
-const client = new faunadb.Client({ secret: process.env.FAUNADB_SECRET });
+const client = new faunadb.Client({ secret: "fnAFeV1rgtAAQH4naL-Qkc7DUCj-fiSKpC-tO9B1" });
 
 async function saveMessage(messageData) {
   return client.query(
