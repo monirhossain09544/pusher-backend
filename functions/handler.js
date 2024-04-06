@@ -1,10 +1,5 @@
 // functions/handler.js
-const express = require('express');
-const bodyParser = require('body-parser');
 const Pusher = require('pusher');
-
-const app = express();
-app.use(bodyParser.json());
 
 // Initialize Pusher
 const pusher = new Pusher({
@@ -15,13 +10,30 @@ const pusher = new Pusher({
   useTLS: true
 });
 
-// Route handler for notification endpoint
 exports.handler = async (event) => {
-  const { message } = JSON.parse(event.body);
-  pusher.trigger('notification-channel', 'new-notification', { message });
+  // Handle GET request
+  if (event.httpMethod === "GET") {
+    // Handle the GET request logic here
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'GET request received' })
+    };
+  }
   
+  // Handle POST request
+  if (event.httpMethod === "POST") {
+    // Handle the POST request logic here
+    const { message } = JSON.parse(event.body);
+    pusher.trigger('notification-channel', 'new-notification', { message });
+  
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Notification sent' })
+    };
+  }
+
   return {
-    statusCode: 200,
-    body: JSON.stringify({ message: 'Notification sent' })
+    statusCode: 400,
+    body: JSON.stringify({ error: 'Unsupported HTTP method' })
   };
 };
