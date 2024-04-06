@@ -31,6 +31,17 @@ exports.handler = async (event) => {
       body: JSON.stringify({ message: 'Notification sent' })
     };
   }
+  
+  // Handle DELETE request
+  if (event.httpMethod === "DELETE") {
+    // Handle the DELETE request logic here
+    const { id } = JSON.parse(event.body);
+    // Perform actions with the id
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: `Item with ID ${id} deleted successfully` })
+    };
+  }
 
   return {
     statusCode: 400,
