@@ -23,7 +23,13 @@ exports.handler = async (event) => {
         const { message, user } = JSON.parse(event.body);
         const messageData = { user, text: message, timestamp: new Date().toISOString() };
         const savedMessage = await saveMessage(messageData);
-        pusher.trigger('chat-channel', 'new-message', savedMessage);
+        try {
+          // Await Pusher trigger to catch any errors that occur here
+          await pusher.trigger('chat-channel', 'new-message', savedMessage);
+        } catch (pusherError) {
+          console.error('Error triggering Pusher:', pusherError);
+          // Handle the Pusher error, possibly by logging it or sending a response that indicates failure
+        }
         return { statusCode: 200, body: JSON.stringify({ message: 'Message sent and stored' }) };
 
       case "DELETE":
@@ -35,7 +41,16 @@ exports.handler = async (event) => {
         return { statusCode: 400, body: JSON.stringify({ error: 'Unsupported HTTP method' }) };
     }
   } catch (error) {
-    console.error('Error handling request:', error);
-    return { statusCode: 500, body: JSON.stringify({ error: 'Internal Server Error' }) };
+    console.error('Unhandled error:', error);
+    // This is a catch-all for other errors that may occur in the handler
+    return { statusCode: 500, body: JSON.stringify({ error: 'Internal Server Error', details: error.toString() }) };
   }
 };
+
+// Global handler for uncaught exceptions and unhandled rejections
+process.on('unhandledRejection', error => {
+  console.error('Unhandled rejection:', error);
+});
+process.on('uncaughtException', error => {
+  console.error('Uncaught exception:', error);
+});
