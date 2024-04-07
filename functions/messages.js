@@ -9,13 +9,29 @@ async function saveMessage(messageData) {
   ).then((response) => response.data);
 }
 
-async function getMessages() {
+async function getMessages(since) {
+  const indexRef = q.Match(q.Index('messages_by_timestamp'));
+  let paginateExpr = q.Paginate(q.Documents(q.Collection('chat_messages')));
+
+  if (since) {
+    paginateExpr = q.Paginate(
+      q.Range(indexRef, q.Time(since), null)
+    );
+  }
+
   return client.query(
     q.Map(
-      q.Paginate(q.Documents(q.Collection('chat_messages'))),
+      paginateExpr,
       q.Lambda('X', q.Get(q.Var('X')))
     )
-  ).then((response) => response.data.map((d) => d.data));
+  ).then((response) => response.data.map((d) => {
+    return {
+      id: d.ref.id,
+      user: d.data.user,
+      text: d.data.text,
+      timestamp: d.data.timestamp
+    };
+  }));
 }
 
 async function deleteMessage(id) {
